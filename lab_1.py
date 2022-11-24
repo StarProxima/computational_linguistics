@@ -9,13 +9,13 @@ download('stopwords')
 
 
 def printSentences(text):
-    sentNum = 1
+    count = 1
     print('\n\nПредложения: \n')
     for el in text:
         sentences = sent_tokenize(el)
         for i in range(len(sentences)):
-            print(str(sentNum) + ": " + str(sentences[i]))
-            sentNum += 1
+            print(str(count) + ": " + str(sentences[i]))
+            count += 1
     file.close()
 
 
@@ -39,7 +39,7 @@ def printStopWords():
 
 
 def printSentencesWithoutStopWords(text):
-    sentNum = 1
+    count = 1
     st_words = set(stopwords.words('russian'))
     print('\n\nСлова из предложений без стоп слов: \n')
     for el in text:
@@ -49,8 +49,8 @@ def printSentencesWithoutStopWords(text):
             words = word_tokenize(sent)
             without_stop_words = [
                 word for word in words if not word.lower() in st_words and word.isalpha()]
-            print(str(sentNum) + ":", *without_stop_words)
-            sentNum += 1
+            print(str(count) + ":", *without_stop_words)
+            count += 1
     file.close()
 
 
@@ -62,19 +62,21 @@ def printWordsRate(text):
     for word1 in sent:
         tmp = word1
         words = word_tokenize(tmp)
-        no_stop_word = [
+        words_without_stop = [
             word.lower() for word in words if not word in stop_words and word.isalpha()]
-        for word in no_stop_word:
+        for word in words_without_stop:
             result_list.append(word)
-    wordFreq = {}
+    map = {}
+
     for word in result_list:
-        if word in wordFreq.keys():
-            wordFreq[word] += 1
+        if word in map.keys():
+            map[word] += 1
         else:
-            wordFreq[word] = 1
+            map[word] = 1
+
     print()
     sortedList = {k: v for k, v in sorted(
-        wordFreq.items(), key=lambda item: (-item[1], item[0]))}
+        map.items(), key=lambda item: (-item[1], item[0]))}
 
     for word in sortedList:
         print(sortedList[word], word)
